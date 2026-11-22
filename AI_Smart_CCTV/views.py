@@ -118,6 +118,13 @@ def render_dashboard() -> None:
 
 def render_live_camera() -> None:
     st.caption("Camera access starts only after you press Start. A green indicator remains visible while it is active.")
+    if settings.hosted_deployment:
+        st.warning(
+            "Live server-camera monitoring is disabled for this hosted deployment. "
+            "Use Person detection to capture a one-time image in your browser, or run this app on the camera host.",
+            title="Hosted deployment limitation",
+        )
+        return
     source_kind = st.segmented_control("Camera source", ["Laptop webcam", "IP camera"], default="Laptop webcam", key="source_kind")
     source = 0
     if source_kind == "IP camera":
@@ -296,6 +303,12 @@ def render_settings() -> None:
     st.table({"SMTP status": "Configured" if settings.email_ready else "Not configured", "Snapshot cooldown": f"{settings.snapshot_cooldown_seconds} seconds", "Prolonged presence rule": f"{settings.presence_seconds} seconds"}, border="horizontal", width="content", alt="Alert and retention configuration")
     if not settings.email_ready:
         st.info("To enable optional email, set CCTV_SMTP_HOST, CCTV_SMTP_PORT, CCTV_SMTP_USERNAME, CCTV_SMTP_PASSWORD, and CCTV_ALERT_RECIPIENT in the deployment environment.")
+    if settings.hosted_deployment:
+        st.warning(
+            "This instance uses the hosted-deployment mode. Streamlit Community Cloud storage is temporary; "
+            "connect persistent storage before using it for security records or consented face data.",
+            title="Storage warning",
+        )
     st.subheader("Snapshot privacy")
     files = sorted(SNAPSHOTS_DIR.glob("*.jpg"))
     st.write(f"Stored snapshots: {len(files)}")

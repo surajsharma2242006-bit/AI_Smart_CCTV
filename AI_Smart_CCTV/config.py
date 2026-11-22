@@ -7,9 +7,13 @@ from pathlib import Path
 
 
 BASE_DIR = Path(__file__).resolve().parent
-SNAPSHOTS_DIR = BASE_DIR / "snapshots"
-DATABASE_DIR = BASE_DIR / "database"
-FACES_DIR = BASE_DIR / "registered_faces"
+# Streamlit Community Cloud has an ephemeral filesystem.  Keep all mutable data
+# in one configurable location so production hosts can mount persistent storage
+# without changing the application code.
+DATA_DIR = Path(os.getenv("CCTV_DATA_DIR", str(BASE_DIR))).expanduser().resolve()
+SNAPSHOTS_DIR = DATA_DIR / "snapshots"
+DATABASE_DIR = DATA_DIR / "database"
+FACES_DIR = DATA_DIR / "registered_faces"
 MODELS_DIR = BASE_DIR / "models"
 
 for directory in (SNAPSHOTS_DIR, DATABASE_DIR, FACES_DIR, MODELS_DIR):
@@ -27,6 +31,9 @@ class Settings:
     smtp_username: str = os.getenv("CCTV_SMTP_USERNAME", "")
     smtp_password: str = os.getenv("CCTV_SMTP_PASSWORD", "")
     alert_recipient: str = os.getenv("CCTV_ALERT_RECIPIENT", "")
+    # Set this to true for Streamlit Community Cloud and other hosted services.
+    # Those servers do not have access to the viewer's laptop webcam.
+    hosted_deployment: bool = os.getenv("CCTV_HOSTED_DEPLOYMENT", "false").lower() == "true"
 
     @property
     def email_ready(self) -> bool:
