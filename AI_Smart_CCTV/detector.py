@@ -20,7 +20,7 @@ class PersonDetector:
         if self.model is not None:
             return True
         try:
-            from ultralytics import YOLO
+            from ultralytics import YOLO # type: ignore
             local_model = MODELS_DIR / "yolo11n.pt"
             self.model = YOLO(str(local_model if local_model.exists() else "yolo11n.pt"))
             return True
