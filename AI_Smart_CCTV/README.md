@@ -12,7 +12,7 @@ The app is ready to deploy from the `AI_Smart_CCTV` folder.
 4. Add `CCTV_HOSTED_DEPLOYMENT = "true"` to the secrets. This disables the server-camera page, because a hosted server cannot access a visitor's laptop webcam.
 5. Deploy. The **Person detection** page still supports explicit browser camera captures.
 
-`requirements.txt`, `packages.txt`, `.streamlit/config.toml`, and `runtime.txt` are included for the Cloud build. Face matching is deliberately optional in hosted deployments: its native `dlib` dependency is unreliable on managed builders, while camera-input detection, motion analysis, alerts, reports, and the consent workflow remain available.
+`requirements.txt`, `.streamlit/config.toml`, and `runtime.txt` are in the app folder. The repository-root `packages.txt` installs the Linux system libraries required by OpenCV. Face matching is deliberately optional in hosted deployments: its native `dlib` dependency is unreliable on managed builders, while camera-input detection, motion analysis, alerts, reports, and the consent workflow remain available.
 
 ### Important hosted-service limits
 

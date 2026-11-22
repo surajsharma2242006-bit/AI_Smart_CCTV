@@ -1,0 +1,4 @@
+# System libraries required by OpenCV on Streamlit Community Cloud.
+# Community Cloud reads packages.txt from the repository root.
+libgl1
+libglib2.0-0
