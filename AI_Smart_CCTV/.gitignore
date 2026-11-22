@@ -1,0 +1,9 @@
+.streamlit/secrets.toml
+__pycache__/
+*.pyc
+database/*.db
+snapshots/*
+!snapshots/.gitkeep
+registered_faces/*
+!registered_faces/.gitkeep
+models/*.pt
